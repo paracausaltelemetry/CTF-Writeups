@@ -152,7 +152,7 @@ WS3C@NIXEASY:~$ cd /home/flag
 WS3C@NIXEASY:/home/flag$ ls
 flag.txt
 WS3C@NIXEASY:/home/flag$ cat flag.txt
-||HTB{this_is_the_flag}||
+||HTB{this_is**********||
 ```
 
 Great Success!

@@ -21,7 +21,7 @@ Stormbound engineers reached the lower Crownspire brineworks after alarms echoed
 ## Flag
 
 ```
-HTB{4sh_v4ult_1nt3rl0ck_s3aled_4c800d4d2092edcc0e09eb89984a9f79}
+||HTB{4sh_v4ult_1nt3rl0ck_s3aled_4********************************||
 ```
 
 ---
@@ -244,7 +244,7 @@ curl -H "X-Engineering-Station: AVX-EWS-01" \
 ```
 
 ```
-AVX900 ASH-VAULT SEAL MADE - TOKEN HTB{4sh_v4ult_1nt3rl0ck_s3aled_4c800d4d2092edcc0e09eb89984a9f79}
+AVX900 ASH-VAULT SEAL MADE - TOKEN ||HTB{4sh_v4ult_1nt3rl0ck_s3aled_4********************************||
 ```
 
 The exact same `/alarms` request without the header still returns "ENGINEERING ACK REQUIRED", which is what made this so easy to walk past.

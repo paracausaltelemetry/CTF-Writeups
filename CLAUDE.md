@@ -11,7 +11,8 @@ Guidance for any Claude session working in this repo. These are CTF/security wri
 ## Format
 
 - Follow `TEMPLATE.md` and `FORMAT.md`: YAML front matter, numbered sections, language-tagged code fences.
-- Wrap every flag, password, and hash in `||...||` spoiler markup.
+- Wrap every password and hash in `||...||` spoiler markup.
+- **Flags must never appear in full.** Keep the first half of a flag visible and replace the back half with `*` of equal length, then wrap the result in `||...||` (a flag `HTB{keep_this_half_hide_the_rest}` is stored as `||HTB{keep_this_half*************||`). Also mask anything a scraper could reassemble into a flag: fragments shown in pieces, and base64 or other encodings that decode to a flag get their inner value fully starred inside the `||...||`. Nothing on the page should let the full flag be reconstructed.
 - Placement and naming conventions are in `FORMAT.md` (HTB machine writeups live at `HTB/htb-<name>.md`).
 
 ## Before committing a writeup

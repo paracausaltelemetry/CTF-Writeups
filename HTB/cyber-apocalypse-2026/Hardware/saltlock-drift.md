@@ -157,7 +157,7 @@ Receiver State: Door unlocked, Channel clear, Counter 3390
 Band: 433.920 MHz
 
 Last Events
-- FLAG HTB{r0llj4m_5alt_f0b_5pl1t_95ebddd68052363c058b6c9fe6eb4f9a}
+- FLAG ||HTB{r0llj4m_5alt_f0b_5pl1t_95e******************************||
 - 10:11:34 unused rolling code replay accepted
 - 10:11:33 channel jammer set off
 - 10:11:33 physical fob lock blocked by channel noise
@@ -176,7 +176,7 @@ value, since only one of the two captured codes was ever spent.
 ## Flag
 
 ```
-HTB{r0llj4m_5alt_f0b_5pl1t_95ebddd68052363c058b6c9fe6eb4f9a}
+||HTB{r0llj4m_5alt_f0b_5pl1t_95e******************************||
 ```
 
 ## Root Cause / Fix

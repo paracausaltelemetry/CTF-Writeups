@@ -120,7 +120,7 @@ index 54d0271..0e1d395 100644
      mydb = mysql.connector.connect(
      host="localhost",
      user="root", # Username Goes Here
--    password="||flag{a489a9dbf8eb9d37c6e0cc1a92cda17b}||" # Password Goes Here
+-    password="||flag{a489a9dbf8eb9d*******************||" # Password Goes Here
 +    password="" # Password Goes Here
      )
 
@@ -129,7 +129,7 @@ index 54d0271..0e1d395 100644
      mydb = mysql.connector.connect(
      host="localhost",
      user="root", #username Goes here
--    password="||flag{a489a9dbf8eb9d37c6e0cc1a92cda17b}||", #password Goes here
+-    password="||flag{a489a9dbf8eb9d*******************||", #password Goes here
 +    password="", #password Goes here
      database="commited"
      )
@@ -138,7 +138,7 @@ index 54d0271..0e1d395 100644
      mydb = mysql.connector.connect(
      host="localhost",
      user="root",
--    password="||flag{a489a9dbf8eb9d37c6e0cc1a92cda17b}||",
+-    password="||flag{a489a9dbf8eb9d*******************||",
 +    password="",
      database="commited"
      )
@@ -151,7 +151,7 @@ The diff shows that the password field previously contained the flag and was lat
 #### Discover the flag in the repository!
 ### Answer
 ```bash
-||flag{a489a9dbf8eb9d37c6e0cc1a92cda17b}||
+||flag{a489a9dbf8eb9d*******************||
 ```
 
 ## 6. Summary

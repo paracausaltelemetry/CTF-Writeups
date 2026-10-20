@@ -167,13 +167,13 @@ print(flag.decode())
 ```
 
 ```
-HTB{sk1lls_st1ll_pr3ss_th3_m4rk}
+||HTB{sk1lls_st1ll****************||
 ```
 
 ## Flag
 
 ```
-HTB{sk1lls_st1ll_pr3ss_th3_m4rk}
+||HTB{sk1lls_st1ll****************||
 ```
 
 ## Why this is an AI/ML challenge, not a web or forensics one

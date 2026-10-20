@@ -58,14 +58,14 @@ cat * | grep query
 One base64 value stood out:
 
 ```text
-||ZWNobyAnVEhNe3N1cDNyXzM0c3lfdzNic2gzbGx9Jwo=||
+||********************************************||
 ```
 
 Decoding that value produced an `echo` command containing the flag.
 
 ### Decoded Command
 ```bash
-echo '||THM{sup3r_34sy_w3bsh3ll}||'
+echo '||THM{sup3r_34************||'
 ```
 
 ## 5. Flag
@@ -73,7 +73,7 @@ echo '||THM{sup3r_34sy_w3bsh3ll}||'
 #### What is the flag?
 ### Answer
 ```text
-||THM{sup3r_34sy_w3bsh3ll}||
+||THM{sup3r_34************||
 ```
 
 ## 6. Summary

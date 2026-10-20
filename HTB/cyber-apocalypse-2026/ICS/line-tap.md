@@ -66,13 +66,13 @@ root@...:~# cd ..
 root@...:/# ls
 bin  boot  dev  etc  flag.txt  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 root@...:/# cat flag.txt
-HTB{r7u_l1n3_74p_5n4p5h07_a39f1634e898e4b9b2444b3aab698543}
+||HTB{r7u_l1n3_74p_5n4p5h07_a39f*****************************||
 ```
 
 ## Flag
 
 ```
-HTB{r7u_l1n3_74p_5n4p5h07_a39f1634e898e4b9b2444b3aab698543}
+||HTB{r7u_l1n3_74p_5n4p5h07_a39f*****************************||
 ```
 
 ## Root Cause / Fix

@@ -164,7 +164,7 @@ Reverse
 
 ### Answer
 ```text
-||THM{pL4y_w1Th_tH3_URL}||
+||THM{pL4y_w1***********||
 ```
 
 ## 7. Summary

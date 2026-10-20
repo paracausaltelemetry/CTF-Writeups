@@ -109,7 +109,7 @@ cat /opt/supply-chain/incident/logs/beacon_capture.log
 [2024-02-16 03:13:47] SESSION beacon-4821 ESTABLISHED  src=10.0.1.50  dst=attacker.com:443
 [2024-02-16 03:13:47] REQUEST POST /beacon HTTP/1.1
 [2024-02-16 03:13:47] HOST attacker.com
-[2024-02-16 03:13:47] PAYLOAD host=ml-server-prod-01&id=||THM{b4ckd00r_1n_||
+[2024-02-16 03:13:47] PAYLOAD host=ml-server-prod-01&id=||****************||
 [2024-02-16 03:13:48] SESSION beacon-4821 BLOCKED  bytes_captured=51  reason=SOC_RULE_4821
 ```
 
@@ -142,7 +142,7 @@ Combining both artefacts recovered the complete flag.
 
 ### Answer
 ```text
-||THM{b4ckd00r_1n_pl41n_s1ght}||
+||THM{b4ckd00r_1**************||
 ```
 
 ## 7. Summary

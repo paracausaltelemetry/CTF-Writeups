@@ -89,7 +89,7 @@ The recovered console text contained the flag.
 
 ### Answer
 ```text
-||THM{You_found_me}||
+||THM{You_f********||
 ```
 
 ## 5. Task 4 - TrueCrypt
