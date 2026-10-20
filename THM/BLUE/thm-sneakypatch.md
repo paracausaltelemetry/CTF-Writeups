@@ -84,7 +84,7 @@ I decoded the hex string in CyberChef with `From Hex`.
 
 ### Decoded Output
 ```text
-||THM{sup3r_sn34ky_d00r}||
+||THM{sup3r_s***********||
 ```
 
 ## 6. Flag
@@ -92,7 +92,7 @@ I decoded the hex string in CyberChef with `From Hex`.
 #### What is the flag?
 ### Answer
 ```text
-||THM{sup3r_sn34ky_d00r}||
+||THM{sup3r_s***********||
 ```
 
 ## 7. Summary

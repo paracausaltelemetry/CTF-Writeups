@@ -66,7 +66,7 @@ http://lofi.thm/?page=../../../../flag.txt
 
 ### Flag
 ```bash
-||flag{e4478e0eab69bd642b8238765dcb7d18}||
+||flag{e4478e0eab69bd*******************||
 ```
 
 Great Success!

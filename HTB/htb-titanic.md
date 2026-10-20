@@ -157,7 +157,7 @@ That's a file-read bug waiting to happen.
 
 ---
 
-## 4. Foothold — Directory Traversal as developer
+## 4. Foothold - Directory Traversal as developer
 
 ### The os.path.join trick
 My first instinct was classic `../../../../etc/passwd`, but seeing `os.path.join` in the source means I don't even need the traversal. Python's `os.path.join` has a quirk: if any argument starts with `/`, everything before it gets thrown away.
@@ -258,7 +258,7 @@ Shell as developer. `user.txt` is sitting right there if I hadn't already grabbe
 
 ---
 
-## 5. Privilege Escalation — CVE-2024-41817 (ImageMagick)
+## 5. Privilege Escalation - CVE-2024-41817 (ImageMagick)
 
 ### Finding the cron
 Developer's home is empty of anything useful. `/proc` is mounted with `hidepid=invisible`, so I can only see my own and root's processes. Poking around `/opt`:
@@ -289,7 +289,7 @@ magick -version
 # Version: ImageMagick 7.1.1-35 Q16-HDRI
 ```
 
-That version is hit by [CVE-2024-41817](https://github.com/ImageMagick/ImageMagick/security/advisories/GHSA-8rxc-922v-phg8): because of how it was compiled, ImageMagick includes the current working directory in its search path for config files and shared libraries. The reliable PoC drops a malicious `libxcb.so.1` (a library ImageMagick loads) into the working directory — and since the cron `cd`s into a directory I control, my library gets loaded and run as root.
+That version is hit by [CVE-2024-41817](https://github.com/ImageMagick/ImageMagick/security/advisories/GHSA-8rxc-922v-phg8): because of how it was compiled, ImageMagick includes the current working directory in its search path for config files and shared libraries. The reliable PoC drops a malicious `libxcb.so.1` (a library ImageMagick loads) into the working directory - and since the cron `cd`s into a directory I control, my library gets loaded and run as root.
 
 ### PoC as developer
 First I confirmed code execution runs as me by building a library whose constructor calls `id`:
@@ -364,9 +364,9 @@ Rooted.
 ## 7. Summary
 Titanic is a clean chain with two good lessons:
 
-- **`os.path.join` is not a sandbox.** Passing user input as a later argument lets an absolute path blow away the base directory entirely — no `../` needed. Always validate or `os.path.abspath`-check the resolved path against the intended root.
+- **`os.path.join` is not a sandbox.** Passing user input as a later argument lets an absolute path blow away the base directory entirely - no `../` needed. Always validate or `os.path.abspath`-check the resolved path against the intended root.
 - **Working directory + library search path = privesc.** CVE-2024-41817 makes ImageMagick load `libxcb.so.1` from the CWD. Because a root cron `cd`s into a developer-writable directory, dropping a malicious library there runs code as root.
 
-The arbitrary file read tied everything together — reading source, config, and the Gitea SQLite DB — and from there it was crack-the-hash into SSH, then a textbook library-injection cron escalation.
+The arbitrary file read tied everything together - reading source, config, and the Gitea SQLite DB - and from there it was crack-the-hash into SSH, then a textbook library-injection cron escalation.
 
 **Tools used:** `nmap`, `ffuf`, `feroxbuster`, `curl`, `sqlite3`, `hashcat`, `gcc`, `sshpass`.

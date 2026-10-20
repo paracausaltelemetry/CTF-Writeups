@@ -38,7 +38,7 @@ Hashes are high-confidence indicators because they identify a specific file. The
 #### What is the first flag you receive after successfully detecting sample1.exe?
 ### Answer
 ```bash
-||THM{f3cbf08151a11a6a331db9c6cf5f4fe4}||
+||THM{f3cbf08151a11a6******************||
 ```
 
 ## 4. Sample 2 - IP Address
@@ -49,7 +49,7 @@ The malware sandbox showed the external IP address the sample attempted to conne
 #### What is the second flag you receive after successfully detecting sample2.exe?
 ### Answer
 ```bash
-||THM{2ff48a3421a938b388418be273f4806d}||
+||THM{2ff48a3421a938b******************||
 ```
 
 ## 5. Sample 3 - Domain Name
@@ -65,7 +65,7 @@ Blocking the domain meant that new IP addresses behind the same domain would sti
 #### What is the third flag you receive after successfully detecting sample3.exe?
 ### Answer
 ```bash
-||THM{4eca9e2f61a19ecd5df34c788e7dce16}||
+||THM{4eca9e2f61a19ec******************||
 ```
 
 ## 6. Sample 4 - Host Artifact
@@ -84,7 +84,7 @@ ATT&CK ID:     Defense Evasion (TA0005)
 #### What is the fourth flag you receive after successfully detecting sample4.exe?
 ### Answer
 ```bash
-||THM{c956f455fc076aea829799c0876ee399}||
+||THM{c956f455fc076ae******************||
 ```
 
 ## 7. Sample 5 - Tool Behavior
@@ -104,7 +104,7 @@ This rule focused on the tool's network behavior rather than a single hash, IP, 
 #### What is the fifth flag you receive after successfully detecting sample5.exe?
 ### Answer
 ```bash
-||THM{46b21c4410e47dc5729ceadef0fc722e}||
+||THM{46b21c4410e47dc******************||
 ```
 
 ## 8. Sample 6 - Techniques and Procedures
@@ -122,7 +122,7 @@ ATT&CK ID:    Collection (TA0009)
 #### What is the final flag you receive from Sphinx?
 ### Answer
 ```bash
-||THM{c8951b2ad24bbcbac60c16cf2c83d92c}||
+||THM{c8951b2ad24bbcb******************||
 ```
 
 ## 9. Summary

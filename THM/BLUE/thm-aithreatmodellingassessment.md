@@ -27,13 +27,13 @@ I opened the assessment application and worked through the AI threat modelling s
 #### What's the first flag?
 ### Answer
 ```text
-||THM{threat_m0d3l_re4d1_}||
+||THM{threat_m************||
 ```
 
 #### What's the second flag?
 ### Answer
 ```text
-||THM{AI_thr3at_m0dell3d}||
+||THM{AI_thr3a***********||
 ```
 
 ## 4. Summary

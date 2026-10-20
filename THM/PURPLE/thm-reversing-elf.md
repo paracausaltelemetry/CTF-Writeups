@@ -39,7 +39,7 @@ chmod +x crackme1
 The binary prints the flag directly:
 
 ```text
-||flag{not_that_kind_of_elf}||
+||flag{not_that*************||
 ```
 
 The attached walkthrough notes that the binary builds the output by taking an array and adding `0x41`, which is ASCII `A`, to each value. Running it is enough for the room answer, but the decode routine is useful context for later crackmes.
@@ -64,7 +64,7 @@ That gives the required argument:
 Passing that value to the binary prints the flag:
 
 ```text
-||flag{if_i_submit_this_flag_then_i_will_get_points}||
+||flag{if_i_submit_this_fla*************************||
 ```
 
 ## 4. Crackme3
@@ -167,7 +167,7 @@ print("".join(chr(value + 0x41) for value in encoded))
 That produces:
 
 ```text
-||flag{much_reversing_very_ida_wow}||
+||flag{much_reversi****************||
 ```
 
 ## 9. Crackme8
@@ -204,7 +204,7 @@ print("".join(chr(value + 0x41) for value in encoded))
 The final flag is:
 
 ```text
-||flag{at_least_this_cafe_wont_leak_your_credit_card_numbers}||
+||flag{at_least_this_cafe_wont_l*****************************||
 ```
 
 ## 10. Summary

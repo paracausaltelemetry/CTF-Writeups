@@ -143,7 +143,7 @@ Users\shreya\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost
 
 ### Answer
 ```bash
-||flag{HarleyQuinnForQueen}||
+||flag{HarleyQu************||
 ```
 
 #### The same user found an exploit to escalate privileges on the computer. What was the message to the device owner?
@@ -151,7 +151,7 @@ The message was found in `exploit.ps1` on Shreya's desktop.
 
 ### Answer
 ```bash
-||flag{I-hacked-you}||
+||flag{I-ha*********||
 ```
 
 ## 6. Tools And Malware Artifacts

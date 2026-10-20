@@ -115,7 +115,7 @@ curl http://154.57.164.73:30958/alarms
     {
       "id": "RLY104-PHASE-SLIP",
       "severity": "CRIT",
-      "message": "52-T phase-slip trip asserted - TOKEN HTB{104_stale_handoff_tripped_52t_01af674b8fc67d29825a2ba486b4d137}"
+      "message": "52-T phase-slip trip asserted - TOKEN ||HTB{104_stale_handoff_tripped_52t_*********************************||"
     }
   ]
 }
@@ -124,7 +124,7 @@ curl http://154.57.164.73:30958/alarms
 ## Flag
 
 ```
-HTB{104_stale_handoff_tripped_52t_01af674b8fc67d29825a2ba486b4d137}
+||HTB{104_stale_handoff_tripped_52t_*********************************||
 ```
 
 ## Root Cause / Fix

@@ -52,7 +52,7 @@ The QR code decoded directly to the flag.
 #### Uncover and scan the QR code to retrieve the flag!
 ### Answer
 ```bash
-||flag{e08e6ce2f077a1b420cfd4a5d1a57a8d}||
+||flag{e08e6ce2f077a1*******************||
 ```
 
 ## 6. Summary

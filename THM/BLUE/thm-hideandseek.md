@@ -98,7 +98,7 @@ The subdomain `54484d7b7930` was hex encoded.
 
 ### Decoded
 ```text
-||THM{y0||
+||******||
 ```
 
 This was the first part of the flag.
@@ -191,12 +191,12 @@ Last part: d0wn}
 Combining the decoded fragments gave the final flag:
 
 ```text
-||THM{y0|| + ||u_g0t_|| + ||3v3ryt|| + ||h1ng_|| + ||d0wn}||
+||******|| + ||******|| + ||******|| + ||*****|| + ||*****||
 ```
 
 ### Answer
 ```text
-||THM{y0u_g0t_3v3ryth1ng_d0wn}||
+||THM{y0u_g0t_3v**************||
 ```
 
 ## 9. Summary

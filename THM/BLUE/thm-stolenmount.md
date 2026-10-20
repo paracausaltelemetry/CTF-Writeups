@@ -77,7 +77,7 @@ The recovered `secrets.png` file contained a QR code. Scanning the QR code revea
 #### What is the flag?
 ### Answer
 ```text
-||THM{n0t_s3cur3_f1l3_sh4r1ng}||
+||THM{n0t_s3cur3**************||
 ```
 
 ## 7. Summary

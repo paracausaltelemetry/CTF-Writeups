@@ -24,7 +24,7 @@ Provided: `capture.sr`, a sigrok/PulseView logic analyzer capture.
 ## Flag
 
 ```
-HTB{3v3ry_crow_w3ars_h3r_3y3s}
+||HTB{3v3ry_crow_***************||
 ```
 
 ## Step 1: unpack the capture
@@ -173,7 +173,7 @@ w3ars_h3r_3y3s}
 ## Flag
 
 ```
-HTB{3v3ry_crow_w3ars_h3r_3y3s}
+||HTB{3v3ry_crow_***************||
 ```
 
 ## Notes

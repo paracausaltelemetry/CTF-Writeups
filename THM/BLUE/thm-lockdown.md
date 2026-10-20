@@ -64,7 +64,7 @@ Bastion accepted the remediation and confirmed that metadata pre-filtering had b
 
 ### Answer
 ```text
-||THM{l0ck_||
+||*********||
 ```
 
 ## 4. Logging Vulnerability
@@ -97,7 +97,7 @@ Bastion accepted the remediation and changed the logs to record document IDs onl
 
 ### Answer
 ```text
-||d0wn_||
+||*****||
 ```
 
 ## 5. User-Level Access Vulnerability
@@ -133,14 +133,14 @@ Bastion accepted the remediation and confirmed that tenant isolation was enforce
 
 ### Answer
 ```text
-||s3cur3d}||
+||********||
 ```
 
 ## 6. Full Flag
 Putting the fragments in the correct order gives:
 
 ```text
-||THM{l0ck_d0wn_s3cur3d}||
+||THM{l0ck_d0***********||
 ```
 
 ## 7. Summary

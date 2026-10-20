@@ -74,14 +74,14 @@ responses.tryhatme.com
 The suspicious URL path contained a Base64-looking value:
 
 ```text
-tryhatme.com/||VEhNe3lvdV9nMHRfc29tZV9JT0NzX2ZyaWVuZH0=||
+tryhatme.com/||****************************************||
 ```
 
 Decoding that value in CyberChef produced the flag.
 
 ### Answer
 ```text
-||THM{you_g0t_some_IOCs_friend}||
+||THM{you_g0t_som**************||
 ```
 
 #### What library related to socket communication is loaded by the binary?

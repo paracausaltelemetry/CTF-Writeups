@@ -58,7 +58,7 @@ That common link was enough to retrieve the room flag.
 
 ### Answer
 ```text
-||THM{supp1y_ch41n_0wn3d}||
+||THM{supp1y_c***********||
 ```
 
 ## 6. Production Decision

@@ -120,7 +120,7 @@ data.win.eventdata.CommandLine
 
 ### Answer
 ```text
-||THM{M0N1T0R_1$_1N_3FF3CT}||
+||THM{M0N1T0R_1************||
 ```
 
 ## 8. Summary

@@ -99,7 +99,7 @@ The required format used the person's name, surname, and age, with only the firs
 
 ### Answer
 ```text
-||THM{Yves-Marie_Gourlaouen_15}||
+||THM{Yves-Marie_**************||
 ```
 
 ## 8. Summary
