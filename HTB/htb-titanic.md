@@ -23,7 +23,7 @@ Titanic is a cruise-booking site built on Flask. The booking endpoint lets me do
 
 ### NMAP Scan
 ```bash
-nmap -p- --min-rate 10000 10.10.11.55
+nmap -p- --min-rate 10000 machine_ip
 ```
 ```text
 PORT   STATE SERVICE
@@ -34,7 +34,7 @@ PORT   STATE SERVICE
 Only two ports. Running the scripts and version detection on them:
 
 ```bash
-nmap -p 22,80 -sCV 10.10.11.55
+nmap -p 22,80 -sCV machine_ip
 ```
 ```text
 PORT   STATE SERVICE VERSION
@@ -48,14 +48,14 @@ Service Info: Host: titanic.htb; OS: Linux
 SSH on 22, Apache on 80. The OpenSSH and Apache versions both line up with Ubuntu 22.04 (jammy). Port 80 redirects to `titanic.htb`, so there's virtual hosting going on. I added it to my hosts file:
 
 ```bash
-echo "10.10.11.55 titanic.htb" | sudo tee -a /etc/hosts
+echo "machine_ip titanic.htb" | sudo tee -a /etc/hosts
 ```
 
 ### Subdomain Fuzzing
 Since the box cares about the `Host` header, I fuzzed for subdomains with `ffuf`, filtering automatically on the baseline response:
 
 ```bash
-ffuf -u http://10.10.11.55 -H "Host: FUZZ.titanic.htb" \
+ffuf -u http://machine_ip -H "Host: FUZZ.titanic.htb" \
   -w /opt/SecLists/Discovery/DNS/subdomains-top1million-20000.txt -ac
 ```
 ```text
@@ -65,7 +65,7 @@ dev                     [Status: 200, Size: 13982, Words: 1107, Lines: 276]
 `dev.titanic.htb` answers differently, so I added it to hosts as well:
 
 ```bash
-10.10.11.55 titanic.htb dev.titanic.htb
+machine_ip titanic.htb dev.titanic.htb
 ```
 
 ---
