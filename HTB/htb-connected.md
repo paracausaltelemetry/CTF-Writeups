@@ -3,14 +3,14 @@ title: Connected
 summary: Hack The Box Linux machine exploiting a FreePBX SQL injection to RCE (CVE-2025-57819) for a foothold as asterisk, then abusing an incrond file-system watch on a writable DAHDI config to run a root reverse shell.
 date: 2026-10-20
 tags: [Hack The Box, FreePBX, SQLi, RCE, incron, PrivEsc]
-difficulty: medium
+difficulty: easy
 os: Linux
 url: https://app.hackthebox.com/machines/Connected
 ---
 
 # CTF Room: Connected
 - [Link to machine](https://app.hackthebox.com/machines/Connected)
-- **Difficulty:** Medium
+- **Difficulty:** Easy
 - **Category:** Web / PrivEsc
 - **OS:** Linux
 
